@@ -1,0 +1,68 @@
+# ===========================================================================
+#  O que NAO sobe para o GitHub.
+#
+#  Nada aqui e apagado do seu disco: o git so ignora. Voce continua com tudo
+#  funcionando localmente.
+# ===========================================================================
+
+# --------------------------------------------------------------- SEGREDOS
+#
+# keystore.properties guarda a SENHA da sua chave de assinatura em texto
+# puro. Sem esta linha, ela iria para o repositorio no primeiro push — e
+# apagar depois nao adianta, porque o historico do git guarda tudo.
+#
+# Quem clonar copia keystore.properties.exemplo e preenche com a chave dele.
+keystore.properties
+*.jks
+*.keystore
+*.p12
+*.pem
+
+# Contem o caminho do SDK, com o nome de usuario do Windows.
+local.properties
+
+# --------------------------------------------------- AUDIO DE TERCEIROS
+#
+# Os efeitos sonoros sao extraidos do Metal Gear Solid e pertencem a Konami.
+# Usar no seu aparelho e uma coisa; redistribuir num repositorio publico e
+# outra, e essa segunda nao e permitida.
+#
+# O app JA FUNCIONA SEM ELES: SfxBank.render devolve null quando o arquivo
+# nao existe, e o servico cai nos sons sintetizados de CodecSfx.kt, que sao
+# gerados por codigo e nao tem dono. Quem clonar ouve o codec com os bipes
+# sinteticos; voce, no seu disco, continua ouvindo os originais.
+app/src/main/assets/sfx/
+
+# ------------------------------------------------------------- MODELOS
+#
+# Somam mais de 100 MB e nao sao nossos: cada um tem licenca propria e link
+# de download oficial. O README explica onde buscar, e os .bat automatizam.
+# Repositorio de codigo guarda codigo; modelo se baixa.
+app/src/main/assets/vosk-model-pt/
+app/src/main/assets/sherpa-tts/
+app/src/main/assets/sherpa-kws/
+app/src/main/jniLibs/
+app/src/main/java/com/k2fsa/
+
+# --------------------------------------------------------- BUILD E IDE
+.gradle/
+build/
+/build
+/app/build
+/app/release
+/captures
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+Thumbs.db
+
+# Pastas temporarias dos scripts de download
+.tmp-voz/
+.tmp-modelo-kws/

@@ -1,0 +1,69 @@
+Voz de saida pelo sherpa-onnx
+=============================
+
+Roda offline, sem chave e sem cota, na mesma biblioteca nativa que ja esta no
+projeto para a palavra de ativacao. Se voce ja montou o jniLibs e rodou o
+preparar-sherpa.bat, so falta o modelo de voz.
+
+  baixar-voz-sherpa.bat     <- escolhe e instala a voz
+
+Depois, no app:  Configuracao -> motor de voz -> Sherpa
+
+
+As duas vozes que o script oferece
+==================================
+
+  Piper pt-BR "faber"   ~64 MB   melhor qualidade
+  MMS portugues         ~40 MB   mais simples
+
+A diferenca pratica e menor do que parece, porque o filtro de radio corta tudo
+fora de 320-3000 Hz, satura e soma chiado. Boa parte do que separa uma voz da
+outra vive justamente na faixa que o filtro joga fora.
+
+O app nao exige nenhuma dessas duas. Ele procura qualquer .onnx dentro de
+assets/sherpa-tts/ e detecta sozinho se o modelo precisa do espeak. Lista
+completa de vozes:
+
+  https://github.com/k2-fsa/sherpa-onnx/releases/tag/tts-models
+
+Para instalar outra a mao, o conteudo do tarball vai em:
+
+  app/src/main/assets/sherpa-tts/
+     algum-modelo.onnx
+     tokens.txt
+     espeak-ng-data/     (so nos modelos Piper)
+     lexicon.txt         (opcional)
+
+Sem pasta intermediaria: o .onnx fica no primeiro nivel de sherpa-tts/.
+
+
+Por que este caminho e melhor que o TTS do Android
+==================================================
+
+O TextToSpeech do Android nao devolve o audio: speak() toca direto no
+alto-falante. Para conseguir aplicar o filtro de radio, o app sintetiza para um
+WAV no cache, le o arquivo de volta, decodifica o cabecalho e so entao filtra —
+ida e volta ao disco a cada frase.
+
+O sherpa devolve as amostras direto na memoria. O filtro se aplica ali. Sobra
+so uma reamostragem, porque o modelo sintetiza na taxa dele (22050 Hz no Piper)
+e o player toca em outra.
+
+O TTS do Android continua no projeto e continua sendo a rede de seguranca: se o
+modelo do sherpa faltar ou falhar ao carregar, a fala cai para ele sem
+interromper a resposta.
+
+
+Sobre o espeak-ng-data
+======================
+
+Modelos Piper convertem texto em fonemas pelo espeak-ng, que abre seus dados
+com fopen() — funcao do C, que nao enxerga o interior do APK. Por isso o app
+copia essa pasta para a memoria interna na primeira fala. A primeira frase
+depois de instalar demora um pouco mais; as seguintes, nao.
+
+A copia so e considerada concluida quando um arquivo-marca e gravado no fim.
+Se o app for fechado no meio, a proxima execucao refaz a copia inteira em vez
+de usar uma pasta pela metade.
+
+Modelos MMS nao usam espeak e pulam tudo isso.

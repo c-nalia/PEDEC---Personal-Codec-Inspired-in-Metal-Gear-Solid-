@@ -1,0 +1,58 @@
+Modelo de voz offline (Vosk)
+============================
+
+Baixe o modelo pequeno de portugues:
+
+  https://alphacephei.com/vosk/models
+  arquivo: vosk-model-small-pt-0.3.zip   (~31 MB)
+
+Descompacte e coloque o CONTEUDO da pasta do modelo aqui dentro:
+
+  app/src/main/assets/vosk-model-pt/
+
+O Vosk aceita DOIS arranjos de pasta e escolhe pelo que encontrar. Os dois
+funcionam; nao tente converter um no outro.
+
+ARRANJO PLANO (V1) - e como vem o modelo pequeno de portugues:
+
+  vosk-model-pt/
+      final.mdl
+      mfcc.conf
+      Gr.fst
+      HCLr.fst
+      disambig_tid.int
+      word_boundary.int
+      phones.txt
+      README
+      ivector/
+
+ARRANJO EM SUBPASTAS (V2) - modelos maiores e mais recentes:
+
+  vosk-model-pt/
+      am/final.mdl
+      conf/model.conf
+      conf/mfcc.conf
+      graph/Gr.fst
+      graph/HCLr.fst
+      graph/disambig_tid.int
+      graph/phones/word_boundary.int
+      ivector/
+
+O que decide e a dupla que existe na raiz: final.mdl + mfcc.conf indica V1,
+am/final.mdl + conf/model.conf indica V2.
+
+Nao se assuste com a falta de words.txt: os modelos distribuidos trazem a
+tabela de simbolos embutida dentro do Gr.fst, e o Vosk usa ela.
+
+O que NAO pode: misturar os dois, ou deixar uma pasta a mais no meio do
+caminho (vosk-model-pt/vosk-model-small-pt-0.3/final.mdl esta errado).
+
+Na primeira execucao o app copia isso para o armazenamento interno, porque a
+biblioteca nativa nao le assets. Depois disso a copia nao se repete.
+
+Alternativa sem recompilar, se voce ja tem o APK instalado:
+
+  adb push vosk-model-small-pt-0.3/. \
+    /data/data/br.unesp.pedec/files/vosk/vosk-model-pt/
+
+Os efeitos sonoros ficam em sfx/ e ja acompanham o projeto.

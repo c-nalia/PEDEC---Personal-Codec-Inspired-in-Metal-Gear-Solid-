@@ -1,0 +1,36 @@
+Modelo neural da palavra de ativacao (opcional)
+===============================================
+
+Sem este arquivo o app funciona: ele cai para a comparacao por MFCC, que e a
+que voce ja testou. O modelo troca SO a comparacao, que era a parte fraca.
+
+Coloque um arquivo TensorFlow Lite aqui com o nome exato:
+
+    app/src/main/assets/wake_model.tflite
+
+Duas opcoes conhecidas, em ordem de preferencia:
+
+1) YAMNet  (~3,7 MB)
+   https://www.kaggle.com/models/google/yamnet/tfLite
+   Entrada: forma de onda 16 kHz. Saida: embedding de 1024 dimensoes.
+   Treinado em audio geral, nao so fala, mas separa palavras muito melhor
+   que MFCC cru.
+
+2) Google speech_embedding  (~1,3 MB)
+   https://www.kaggle.com/models/google/speech-embedding
+   Feito especificamente para keyword spotting com poucos exemplos, que e
+   exatamente este caso. Pode exigir converter o SavedModel para tflite.
+
+O codigo NAO assume um modelo especifico: ele le a forma dos tensores no
+carregamento e se adapta a entrada de onda crua ou de espectrograma, e a
+saida de vetor unico ou de sequencia. Se voce trocar de modelo depois, basta
+substituir o arquivo e recalibrar.
+
+Alternativa sem recompilar, com o APK ja instalado:
+    adb push wake_model.tflite /data/data/br.unesp.pedec/files/
+
+Depois de por o modelo, RECALIBRE. Os embeddings sao gravados junto com as
+amostras, e uma calibracao antiga nao tem nenhum.
+
+Como saber qual esta valendo: o HUD mostra "ativacao neural (6 amostras)" ou
+"ativacao mfcc (6 amostras)".

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Desde o Android 9 o trafego em texto claro e bloqueado por padrao, e com
+    targetSdk 35 isso vale sem excecao. Todos os provedores embutidos usam
+    HTTPS e continuam protegidos; a unica excecao necessaria e o Ollama, que
+    roda no SEU computador, na sua rede local, e fala HTTP simples.
+
+    Sem esta permissao, apontar o app para http://192.168.x.x:11434 falha com
+    "Cleartext HTTP traffic not permitted" — um erro que nao menciona o
+    manifest e manda voce procurar problema no lugar errado.
+
+    O risco pratico e baixo: o unico endereco em texto claro e o que voce
+    mesmo digita na tela de configuracao.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
